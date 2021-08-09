@@ -1,0 +1,22 @@
+.moviescard__heart {
+    padding: 0;
+    width: 14px;
+    height: 12px;
+    border: none;
+    background-position: center;
+    background: url(../../../images/heart_disabled.svg) no-repeat scroll 0 0 transparent;
+    cursor: pointer;
+}
+
+.moviescard__heart:hover {
+    opacity: 0.5;
+}
+
+.moviescard__heart:focus {
+    outline: none;
+    opacity: 1;
+    }
+
+.moviescard__heart:active {
+    background: url(../../../images/heart_anabled.svg) no-repeat scroll 0 0 transparent;
+}

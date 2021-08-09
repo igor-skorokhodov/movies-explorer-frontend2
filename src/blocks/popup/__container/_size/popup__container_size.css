@@ -1,0 +1,5 @@
+@media screen and (max-width: 950px) {
+    .popup__container_size {
+        width: 240px;
+    }
+}

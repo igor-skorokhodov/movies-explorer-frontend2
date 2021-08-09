@@ -1,0 +1,11 @@
+.searchform__container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: solid;
+    border-width: 1px;
+    border-color: #E8E8E8;
+    margin-bottom: 30px;
+    width: 100%;
+}

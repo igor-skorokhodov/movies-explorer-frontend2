@@ -1,0 +1,18 @@
+.profile__avatar-pen {
+    z-index: 2;
+    grid-area: avatar;
+    visibility: hidden;
+}
+
+.profile__avatar-pen:hover {
+    visibility: visible;
+    cursor: pointer;
+    background-color:rgba(0, 0, 0, 0);
+    opacity: 1;
+}
+
+.profile__avatar-pen:hover + .profile__avatar img {
+    opacity: 0.2;
+    background-color:rgba(0, 0, 0, 0.2);
+}
+

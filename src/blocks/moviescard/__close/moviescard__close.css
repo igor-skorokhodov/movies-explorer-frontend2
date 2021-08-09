@@ -1,0 +1,18 @@
+.moviescard__close {
+  padding: 0;
+  width: 7px;
+  height: 7px;
+  border: none;
+  background-position: center;
+  background: url(../../../images/close.svg) no-repeat scroll 0 0 transparent;
+  cursor: pointer;
+  visibility: hidden;
+}
+
+.moviescard:hover .moviescard__close {
+  visibility: visible;
+}
+
+.moviescard__heart:active {
+  background: url(../../../images/close.svg) no-repeat scroll 0 0 transparent;
+}

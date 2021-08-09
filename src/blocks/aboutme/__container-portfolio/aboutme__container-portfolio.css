@@ -1,0 +1,20 @@
+.aboutme__container-portfolio {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-right: 5%;
+    margin-left: 5%;
+    border-bottom: solid;
+    border-width: 1px;
+    border-color: #E8E8E8;
+    align-items: center;
+}
+
+.aboutme__container-portfolio:first-child {
+    margin-top: 50px;
+  }
+
+  .aboutme__container-portfolio:last-child {
+    border-bottom: none;
+    margin-bottom: 125px;
+  }

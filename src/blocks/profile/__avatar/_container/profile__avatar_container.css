@@ -1,0 +1,6 @@
+.profile__avatar-container {
+    grid-area: avatar;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+}

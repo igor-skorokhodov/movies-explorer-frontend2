@@ -1,0 +1,13 @@
+.footer {
+    padding-left: 5%;
+    padding-right: 5%;
+    display: flex;
+    flex-direction: column;
+    background-color: #FAFAFA;
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+    .footer {
+        background-color: white;
+    }
+}

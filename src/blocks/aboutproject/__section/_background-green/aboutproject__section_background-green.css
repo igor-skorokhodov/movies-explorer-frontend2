@@ -1,0 +1,9 @@
+.aboutproject__section_background-green {
+    display: flex;
+    color: black;
+    background-color: #2BE080;
+    margin: 0;
+    height: 36px;
+    align-items: center;
+    justify-content: center;
+}

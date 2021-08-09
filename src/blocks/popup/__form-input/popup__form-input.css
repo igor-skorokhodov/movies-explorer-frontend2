@@ -1,0 +1,8 @@
+.popup__form-input {
+    width: 83%;
+    margin-right: auto;
+    margin-left: auto;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
