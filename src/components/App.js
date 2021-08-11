@@ -9,12 +9,13 @@ import React from "react";
 import mainApi from "../utils/MainApi.js";
 import moviesApi from "../utils/MoviesApi.js";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
-import { Route, Switch, useHistory, Redirect } from "react-router-dom";
+import { Route, Switch, useHistory } from "react-router-dom";
 import Login from "./Login.js";
 import Register from "./Register.js";
 import ProtectedRoute from "./ProtectedRoute.js";
 import * as auth from "../utils/auth.js";
 import Preloader from "./Preloader";
+import { findAllInRenderedTree } from "react-dom/cjs/react-dom-test-utils.production.min";
 
 function App() {
   const [headerButtonClicked, isHeaderButtonClicked] = React.useState(false);
@@ -25,12 +26,15 @@ function App() {
   });
   const [demand, setDemand] = React.useState("");
   const [searchWords, setSearchWords] = React.useState("");
-  const [check, setCheck] = React.useState('');
+  const [check, setCheck] = React.useState("");
   const [movies, setMovies] = React.useState([]);
+  const [allMovies, setAllMovies] = React.useState([]);
   const [savedMovies, setSavedMovies] = React.useState([]);
   const [shortMovies, setShortMovies] = React.useState([]);
   const [loggedIn, setLoggedIn] = React.useState(false);
+  const [updated, setUpdated] = React.useState(false);
   const [loading, isLoading] = React.useState(false);
+  const [open, isOpen] = React.useState(false);
   const [width, setWidth] = React.useState(0);
   const [array, setArray] = React.useState([]);
   const [array2, setArray2] = React.useState([]);
@@ -40,6 +44,10 @@ function App() {
   const [registeredIn, isRegisteredIn] = React.useState(false);
   const [route, setRoute] = React.useState("");
   const [trig, setTrig] = React.useState(0);
+  const [data, setData] = React.useState({
+    name: "",
+    email: "",
+  });
   const [validity, setValidity] = React.useState({
     formErrors: { email: "", password: "", name: "" },
     emailValid: false,
@@ -51,6 +59,24 @@ function App() {
   let index = 0;
   let columns = 0;
   let rounds = 0;
+
+  React.useEffect(() => {
+    setWidth(window.innerWidth);
+    window.addEventListener(`resize`, () => {
+      setWidth(window.innerWidth);
+      if (localStorage.getItem("route") === "movies") {
+        addingNewCards(
+          window.innerWidth,
+          JSON.parse(localStorage.getItem("movies"))
+        );
+      }
+      if (localStorage.getItem("route") === "savedMovies") {
+        addingNewCards(
+          window.innerWidth,
+          savedMovies)
+      }
+    });
+  }, []);
 
   React.useEffect(() => {
     function handleClick(evt) {
@@ -77,15 +103,120 @@ function App() {
   }, []);
 
   React.useEffect(() => {
-    console.log('cc')
-    mainApi
-      .getMovies()
-      .then((movies1) => {
-        setArray3(movies1.filter((movie) => movie.owner === localStorage.getItem('id')))
+    console.log(allMovies);
+    if (
+      allMovies.filter((movie) => {
+        return movie.nameRU.includes(searchWords);
+      }).length === 0
+    ) {
+      if (allMovies.length === 0) {
+        isOpen(false);
+      } else {
+        isOpen(true);
+      }
+      setMovies(
+        allMovies.filter((movie) => {
+          movie.nameRU.includes(searchWords);
+        })
+      );
+      setMovies(movies);
+      if (allMovies.length !== 0) {
+        localStorage.setItem(
+          "movies",
+          JSON.stringify(
+            allMovies.filter((movie) => {
+              return movie.nameRU.includes(searchWords);
+            })
+          )
+        );
+      }
+      let arr = JSON.parse(localStorage.getItem("movies"));
+      addingNewCards(width, arr);
+      if (route === "savedMovies") {
+        setMovies(
+          savedMovies.filter((movie) => {
+            return movie.nameRU.includes(searchWords);
+          })
+        );
         localStorage.setItem(
           "savedMovies",
           JSON.stringify(
-            movies1.filter((movie) => movie.owner === localStorage.getItem('id'))
+            savedMovies.filter((movie) => {
+              return movie.nameRU.includes(searchWords);
+            })
+          )
+        );
+        addingNewCards(
+          width,
+          savedMovies.filter((movie) => {
+            return movie.nameRU.includes(searchWords);
+          })
+        );
+      }
+    } else {
+      isOpen(false);
+      setMovies(
+        allMovies.filter((movie) => {
+          movie.nameRU.includes(searchWords);
+        })
+      );
+      setMovies(movies);
+      if (allMovies.length !== 0) {
+        localStorage.setItem(
+          "movies",
+          JSON.stringify(
+            allMovies.filter((movie) => {
+              return movie.nameRU.includes(searchWords);
+            })
+          )
+        );
+      }
+      let arr = JSON.parse(localStorage.getItem("movies"));
+      addingNewCards(width, arr);
+      if (route === "savedMovies") {
+        setMovies(
+          savedMovies.filter((movie) => {
+            return movie.nameRU.includes(searchWords);
+          })
+        );
+        localStorage.setItem(
+          "savedMovies",
+          JSON.stringify(
+            savedMovies.filter((movie) => {
+              return movie.nameRU.includes(searchWords);
+            })
+          )
+        );
+        addingNewCards(
+          width,
+          savedMovies.filter((movie) => {
+            return movie.nameRU.includes(searchWords);
+          })
+        );
+      }
+    }
+  }, [allMovies, searchWords]);
+
+  React.useEffect(() => {
+    setData({
+      name: currentUser.name,
+      email: currentUser.email,
+    });
+  }, [currentUser]);
+
+  React.useEffect(() => {
+    mainApi
+      .getMovies()
+      .then((movies1) => {
+        setArray3(
+          movies1.filter((movie) => movie.owner === localStorage.getItem("id"))
+        );
+        localStorage.setItem(
+          "savedMovies",
+          JSON.stringify(
+            movies1.filter(
+              (movie) => movie.owner === localStorage.getItem("id")
+            )
           )
         );
       })
@@ -94,43 +225,29 @@ function App() {
       });
   }, [check]);
 
-  React.useEffect(() => {
-    setWidth(window.innerWidth);
-    window.addEventListener(`resize`, () => {
-      setWidth(window.innerWidth);
-    });
-  }, []);
-
   function onButtonClick() {
-    console.log(array)
-    console.log(array2)
-    console.log(movies)
-    if (array2.columns === 2) {
+    if (array2.columns >= 2) {
       if (array2.rounds > 4) {
         let j = 0;
+        j = array2.index;
+        let arr = [];
+        let m = array2.columns;
         for (let i = 0; i < array2.columns; i++) {
-          j = array2.index;
+          arr[i] = movies[j + m];
+          console.log(movies[j + m]);
+          m--;
           setArray2({
-            index: array2.index = array2.index + 2,
-            rounds: array2.rounds--,
+            index: array2.index++,
+            rounds: array2.rounds,
             columns: array2.columns,
           });
-          setArray([movies[j + 1], movies[j], ...array]);
         }
-      }
-    }
-    if (array2.columns >= 3) {
-      if (array2.rounds > 4) {
-        let j = 0;
-        for (let i = 0; i < array2.columns; i++) {
-          j = array2.index;
-          setArray2({
-            index: array2.index = array2.index + 3,
-            rounds: array2.rounds--,
-            columns: array2.columns,
-          });
-          setArray([movies[j + 2], movies[j + 1], movies[j], ...array]);
-        }
+        setArray(array.concat(arr));
+        setArray2({
+          index: array2.index,
+          rounds: array2.rounds--,
+          columns: array2.columns,
+        });
       }
     }
     if (array2.columns === 1) {
@@ -139,8 +256,8 @@ function App() {
         for (let i = 0; i < array2.columns + 1; i++) {
           j = array2.index;
           setArray2({
-            index: array2.index++,
-            rounds: array2.rounds - 2,
+            index: array2.index + array2.columns + 1,
+            rounds: array2.rounds - 1,
             columns: array2.columns,
           });
           setArray([movies[j + 1], movies[j], ...array]);
@@ -150,29 +267,27 @@ function App() {
   }
 
   function addingNewCards(width, arr) {
-    if (arr === []) {
+    console.log(arr)
+    if (arr === null) {
       setArray([]);
       return;
     }
     let containerWidth = 0;
     let gapWidth = 0;
-    let cardWidth = 0;
+    let cardWidth = 364;
     let gap = 24;
     if (width >= 1280) {
-      cardWidth = 364;
       containerWidth = width * 0.91;
     }
     if (width >= 768 && width < 1280) {
-      cardWidth = 339;
       containerWidth = width * 0.92;
     }
     if (width >= 320 && width < 768) {
-      cardWidth = 300;
       containerWidth = width * 0.94;
     }
     gapWidth = (Math.trunc(containerWidth / cardWidth) - 1) * gap;
     columns = Math.trunc((containerWidth - gapWidth) / cardWidth);
-    rounds = arr.length / columns;
+    rounds = Math.trunc(arr.length / columns);
     if (rounds <= 4) {
       setArray(arr);
       setArray2({ rounds: rounds });
@@ -245,18 +360,20 @@ function App() {
       default:
         break;
     }
+
     setValidity({
       formErrors: fieldValidationErrors,
       emailValid: !emailBoolean,
       passwordValid: passwordValid,
       nameValid: nameValid,
-      formValidReg:
-        validity.emailValid && validity.passwordValid && !validity.nameValid,
-      formValidLog: validity.emailValid && validity.passwordValid,
+      formValidReg: emailValid && passwordValid && !nameValid,
+      formValidLog: emailValid && passwordValid,
+      formValidProfile: emailValid && !nameValid,
     });
   }
 
   function likeMovie(movie) {
+    console.log(localStorage.getItem("id"))
     let i = 0;
     let j = 0;
     JSON.parse(localStorage.getItem("savedMovies")).forEach((savedMovie) => {
@@ -268,23 +385,23 @@ function App() {
         mainApi
           .removeMovie(savedMovie._id)
           .then((res) => {
-            setCheck(res)
+            setCheck(res);
           })
           .catch((err) => {
             console.log(`упс, возникла ошибка! ${err}`);
           });
-
-      } 
+      }
     });
     if (i === 0 && j === 0) {
       j = 1;
       mainApi
         .addMovie(movie, localStorage.getItem("id"))
-        .then((res) => {setCheck(res)})
+        .then((res) => {
+          setCheck(res);
+        })
         .catch((err) => {
           console.log(`упс, возникла ошибка! ${err}`);
         });
-
     }
   }
 
@@ -297,6 +414,7 @@ function App() {
           email: res.email,
           id: res.id,
         });
+        setUpdated(true);
       })
       .catch((err) => {
         console.log(`упс, возникла ошибка! ${err}`);
@@ -308,48 +426,19 @@ function App() {
   }
 
   function searchMovies() {
-    isLoading(true);
-    moviesApi
-      .getMovies()
-      .then((moviesList) => {
-        isLoading(false);
-        setMovies(
-          moviesList.filter((movie) => movie.nameRU.includes(searchWords))
-        );
-        if (route === "movies") {
-          localStorage.setItem(
-            "movies",
-            JSON.stringify(
-              moviesList.filter((movie) => {
-                return movie.nameRU.includes(searchWords);
-              })
-            )
-          );
-          addingNewCards(
-            width,
-            moviesList.filter((movie) => movie.nameRU.includes(searchWords))
-          );
-        }
-        if (route === "savedMovies") {
-          localStorage.setItem(
-            "savedMovies",
-            JSON.stringify(
-              savedMovies.filter((movie) => {
-                return movie.nameRU.includes(searchWords);
-              })
-            )
-          );
-          addingNewCards(
-            width,
-            savedMovies.filter((movie) => {
-              return movie.nameRU.includes(searchWords);
-            })
-          );
-        }
-      })
-      .catch((err) => {
-        console.log(`упс, возникла ошибка! ${err}`);
-      });
+    if (allMovies.length === 0) {
+      isOpen(false);
+      isLoading(true);
+      moviesApi
+        .getMovies()
+        .then((moviesList) => {
+          isLoading(false);
+          setAllMovies(moviesList);
+        })
+        .catch((err) => {
+          console.log(`упс, возникла ошибка! ${err}`);
+        });
+    }
   }
 
   function tokenCheck() {
@@ -374,26 +463,19 @@ function App() {
         .catch((err) => {
           console.log(`упс, возникла ошибка! ${err}`);
         });
-      moviesApi
-        .getMovies()
-        .then((data) => {})
-        .catch((err) => {
-          console.log(`упс, возникла ошибка! ${err}`);
-        });
       mainApi
         .getMovies()
         .then((data) => {
           localStorage.setItem(
             "savedMovies",
             JSON.stringify(
-              data.filter((movie) => movie.owner === localStorage.getItem('id'))
+              data.filter((movie) => movie.owner === localStorage.getItem("id"))
             )
           );
         })
         .catch((err) => {
           console.log(`упс, возникла ошибка! ${err}`);
         });
-      // history.push("/movies");
     }
   }
 
@@ -401,6 +483,7 @@ function App() {
     auth
       .authorize(mail, password)
       .then((data) => {
+        console.log(data);
         if (data.token) {
           localStorage.setItem("token", data.token);
           handleLogin();
@@ -410,8 +493,24 @@ function App() {
             email: data.email,
             id: data.id,
           });
+          let arr = [];
+          localStorage.setItem("id", data.id);
+          localStorage.setItem("savedMovies", JSON.stringify(arr));
+          localStorage.setItem("movies", JSON.stringify(arr));
           history.push("/movies");
         }
+        mainApi
+        .getMovies()
+        .then((data) => {
+          localStorage.setItem(
+            "savedMovies",
+            JSON.stringify(
+              data.filter((movie) => movie.owner === localStorage.getItem("id")))
+          );
+        })
+        .catch((err) => {
+          console.log(`упс, возникла ошибка! ${err}`);
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -437,6 +536,7 @@ function App() {
   function signOut() {
     localStorage.removeItem("token");
     localStorage.removeItem("id");
+    localStorage.removeItem("route");
     localStorage.removeItem("movies");
     localStorage.removeItem("savedMovies");
     localStorage.removeItem("loggedIn");
@@ -468,82 +568,98 @@ function App() {
         <Switch>
           <Route exact path="/">
             <Main
-              route="main"
+              route={route}
               loggedIn={loggedIn}
               setRoute={setRoute}
               isButtonClicked={isButtonClicked}
               headerButtonClicked={headerButtonClicked}
             />
           </Route>
-          <ProtectedRoute path="/movies"
-              component={Movies}
-              tokenCheck={tokenCheck}
-              setRoute={setRoute}
-              isButtonClicked={isButtonClicked}
-              headerButtonClicked={headerButtonClicked}
-              searchMovies={searchMovies}
-              setWords={setSearchWords}
-              setDemand={setDemand}
-              movies={movies}
-              demand={demand}
-              searchWords={searchWords}
-              buttonClick={onButtonClick}
-              array={array}
-              array2={array2}
-              likeMovie={likeMovie}
-              addingNewCards={addingNewCards}
-              shortMovies={shortMovies}
-              setShortMovies={setShortMovies}
-              width={width}
-              savedMovies={JSON.parse(localStorage.getItem("savedMovies"))}
-              setMovies={setMovies}
-              setArray={setArray}
-              loggedIn={loggedIn}
-              check={check}
-              array3={array3}
-              trig={trig}
-              setTrig={setTrig}
-            />
-          <ProtectedRoute path="/saved-movies"
-              component={SavedMovies}
-              tokenCheck={tokenCheck}
-              setRoute={setRoute}
-              isButtonClicked={isButtonClicked}
-              headerButtonClicked={headerButtonClicked}
-              searchMovies={searchMovies}
-              setWords={setSearchWords}
-              setDemand={setDemand}
-              movies={movies}
-              demand={demand}
-              searchWords={searchWords}
-              buttonClick={onButtonClick}
-              array={array}
-              array2={array2}
-              likeMovie={likeMovie}
-              addingNewCards={addingNewCards}
-              shortMovies={shortMovies}
-              setShortMovies={setShortMovies}
-              width={width}
-              savedMovies={JSON.parse(localStorage.getItem("savedMovies"))}
-              route={route}
-              setMovies={setMovies}
-              buttonClick={onButtonClick}
-              loggedIn={loggedIn}
-              array3={array3}
-              trig={trig}
-              setTrig={setTrig}
-            />
-          <ProtectedRoute path="/profile"
-              component={Profile}
-              isButtonClicked={isButtonClicked}
-              setRoute={setRoute}
-              route={route}
-              validity={validity}
-              validateField={validateField}
-              updateUser={handleUpdateUser}
-              signOut={signOut}
-              loggedIn={loggedIn}
-            />
+          <ProtectedRoute
+            path="/movies"
+            component={Movies}
+            tokenCheck={tokenCheck}
+            setRoute={setRoute}
+            route={route}
+            isButtonClicked={isButtonClicked}
+            headerButtonClicked={headerButtonClicked}
+            searchMovies={searchMovies}
+            setWords={setSearchWords}
+            setDemand={setDemand}
+            movies={movies}
+            demand={demand}
+            searchWords={searchWords}
+            buttonClick={onButtonClick}
+            array={array}
+            array2={array2}
+            likeMovie={likeMovie}
+            addingNewCards={addingNewCards}
+            shortMovies={shortMovies}
+            setShortMovies={setShortMovies}
+            width={width}
+            savedMovies={JSON.parse(localStorage.getItem("savedMovies"))}
+            setMovies={setMovies}
+            setArray={setArray}
+            loggedIn={loggedIn}
+            check={check}
+            array3={array3}
+            trig={trig}
+            setTrig={setTrig}
+            setOpen={isOpen}
+            open={open}
+            setError={setErr}
+          />
+          <ProtectedRoute
+            path="/saved-movies"
+            component={SavedMovies}
+            tokenCheck={tokenCheck}
+            setRoute={setRoute}
+            isButtonClicked={isButtonClicked}
+            headerButtonClicked={headerButtonClicked}
+            searchMovies={searchMovies}
+            setWords={setSearchWords}
+            setDemand={setDemand}
+            movies={movies}
+            demand={demand}
+            searchWords={searchWords}
+            buttonClick={onButtonClick}
+            array={array}
+            array2={array2}
+            likeMovie={likeMovie}
+            addingNewCards={addingNewCards}
+            shortMovies={shortMovies}
+            setShortMovies={setShortMovies}
+            width={width}
+            savedMovies={JSON.parse(localStorage.getItem("savedMovies"))}
+            route={route}
+            setMovies={setMovies}
+            buttonClick={onButtonClick}
+            loggedIn={loggedIn}
+            array3={array3}
+            trig={trig}
+            setTrig={setTrig}
+            setOpen={isOpen}
+            open={open}
+            setError={setErr}
+          />
+          <ProtectedRoute
+            path="/profile"
+            component={Profile}
+            isButtonClicked={isButtonClicked}
+            setRoute={setRoute}
+            route={route}
+            validity={validity}
+            validateField={validateField}
+            updateUser={handleUpdateUser}
+            signOut={signOut}
+            loggedIn={loggedIn}
+            validity={validity}
+            setValidity={setValidity}
+            data={data}
+            setData={setData}
+            updated={updated}
+            setError={setErr}
+          />
           <Route path="/signup">
             <Register
               isButtonClicked={isButtonClicked}

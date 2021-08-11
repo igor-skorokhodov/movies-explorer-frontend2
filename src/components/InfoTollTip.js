@@ -4,7 +4,6 @@ import error from "../images/krestik.svg";
 import { useHistory } from "react-router-dom";
 
 function InfoToolTip(props) {
-
   const history = useHistory();
 
   function closeInfoToolTip() {
@@ -53,22 +52,34 @@ function InfoToolTip(props) {
         ></button>
         <img
           className="infotooltip__pic"
-          src={props.registeredIn && !props.regError ? ok : error}
+          src={
+            props.route === "profile"
+              ? ok
+              : props.registeredIn &&
+                !props.regError &&
+                props.route === "profile"
+              ? ok
+              : error
+          }
           alt={
             (props.registeredIn
               ? "регистрация прошла успешно"
-              : "что-то пошло не так, регистрация не прошла")
-              &&
-              (props.regError
-                ? "регистрация прошла успешно"
-                : "такой пользователь уже существует")
+              : "что-то пошло не так, регистрация не прошла") &&
+            (props.regError
+              ? "регистрация прошла успешно"
+              : "такой пользователь уже существует")
           }
         ></img>
-        {console.log(props.registeredIn)}
         <p className="infotooltip__text">
-          {(props.regError
+          {props.regError
             ? "такой пользователь уже существует"
-            : props.registeredIn ? "регистрация прошла успешно" : "что-то пошло не так, попробуйте еще раз")}
+            : props.route === "profile"
+            ? "Данные пользователя успешно обновлены"
+            : props.route === "movies" || props.route === "savedMovies"
+            ? "ничего не найдено"
+            : props.registeredIn
+            ? "регистрация прошла успешно"
+            : "что-то пошло не так, попробуйте еще раз"}
         </p>
       </div>
     </div>

@@ -4,25 +4,42 @@ import Header from "../components/Header.js";
 import Footer from "../components/Footer.js";
 import Preloader from "../components/Preloader.js";
 import SearchForm from "../components/SearchForm.js";
+import InfoToolTip from "./InfoTollTip.js";
 
 function SavedMovies(props) {
+  const [isOpen, setIsOpen] = React.useState(false);
 
   React.useEffect(() => {
-    props.setRoute('savedMovies')
+    props.setRoute("savedMovies");
+    localStorage.setItem('route', 'savedMovies');
     if (JSON.parse(localStorage.getItem("savedMovies"))) {
-    props.setMovies(JSON.parse(localStorage.getItem("savedMovies")));
-    props.addingNewCards(window.innerWidth, JSON.parse(localStorage.getItem("savedMovies")));
-  }}, [props.array3]);
+      props.setMovies(JSON.parse(localStorage.getItem("savedMovies")));
+      props.addingNewCards(
+        window.innerWidth,
+        JSON.parse(localStorage.getItem("savedMovies"))
+      );
+    }
+  }, [props.array3]);
 
   React.useEffect(() => {
-    props.setMovies(JSON.parse(localStorage.getItem("savedMovies")))
+    props.setMovies(JSON.parse(localStorage.getItem("savedMovies")));
     if (JSON.parse(localStorage.getItem("shortMovies"))) {
-    props.setMovies(JSON.parse(localStorage.getItem("shortMovies")))
-    props.addingNewCards(window.innerWidth, JSON.parse(localStorage.getItem("savedMovies")));
-  }}, [props.trig]);
+      props.setMovies(JSON.parse(localStorage.getItem("shortMovies")));
+      props.addingNewCards(
+        window.innerWidth,
+        JSON.parse(localStorage.getItem("savedMovies"))
+      );
+    }
+  }, [props.trig]);
 
   return (
     <>
+      <InfoToolTip
+        setOpen={props.setOpen}
+        route={props.route}
+        isOpen={props.open}
+        setError={props.setError}
+      />
       <Header
         route="savedMovies"
         loggedIn={props.loggedIn}
@@ -34,6 +51,7 @@ function SavedMovies(props) {
       />
       <SearchForm
         setWords={props.setWords}
+        words={props.words}
         searchMovies={props.searchMovies}
         setDemand={props.setDemand}
         demand={props.demand}

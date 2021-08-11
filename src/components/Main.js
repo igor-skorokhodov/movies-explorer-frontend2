@@ -20,12 +20,14 @@ function Main(props) {
   return (
     <>
       <Header
-        route="main"
+        route={props.route}
         signUp={props.signUp}
         signIn={props.signIn}
         email={props.email}
         loggedIn={props.loggedIn}
         name="Выйти"
+        isButtonClicked={props.isButtonClicked}
+        headerButtonClicked={props.headerButtonClicked}
         isButtonClicked={props.isButtonClicked}
         headerButtonClicked={props.headerButtonClicked}
       />

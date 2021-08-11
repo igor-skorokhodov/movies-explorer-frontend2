@@ -45,6 +45,7 @@ function Register(props) {
         submit={handleSubmit}
         formValid={props.validity.formValidReg}
         route={props.route}
+        setError={props.setError}
       >
         <p className="logreg__form-name">Имя</p>
         <input

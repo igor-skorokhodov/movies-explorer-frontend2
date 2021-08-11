@@ -4,34 +4,53 @@ import Header from "../components/Header.js";
 import Footer from "../components/Footer.js";
 import Preloader from "../components/Preloader.js";
 import SearchForm from "../components/SearchForm.js";
+import InfoToolTip from "./InfoTollTip.js";
 
 function Movies(props) {
   const adress = "https://api.nomoreparties.co";
-  const [likes, setLikes] = React.useState([]);
 
   React.useEffect(() => {
+    console.log('11')
     props.setRoute("movies");
+    localStorage.setItem('route', 'movies');
     if (localStorage.getItem("movies")) {
       props.setMovies(JSON.parse(localStorage.getItem("movies")));
-      props.addingNewCards(window.innerWidth, JSON.parse(localStorage.getItem("movies")));
+      props.addingNewCards(
+        window.innerWidth,
+        JSON.parse(localStorage.getItem("movies"))
+      );
     }
   }, []);
 
   React.useEffect(() => {
     if (localStorage.getItem("movies")) {
-    props.addingNewCards(window.innerWidth, JSON.parse(localStorage.getItem("movies")));
-    props.setMovies(JSON.parse(localStorage.getItem("movies")));
-  }}, [props.array3]);
+      props.addingNewCards(
+        window.innerWidth,
+        JSON.parse(localStorage.getItem("movies"))
+      );
+      props.setMovies(JSON.parse(localStorage.getItem("movies")));
+    }
+  }, [props.array3]);
 
   React.useEffect(() => {
-    props.setMovies(JSON.parse(localStorage.getItem("movies")))
+    props.setMovies(JSON.parse(localStorage.getItem("movies")));
     if (JSON.parse(localStorage.getItem("shortMovies"))) {
-    props.setMovies(JSON.parse(localStorage.getItem("shortMovies")))
-    props.addingNewCards(window.innerWidth, JSON.parse(localStorage.getItem("shortMovies")));}
+      props.setMovies(JSON.parse(localStorage.getItem("shortMovies")));
+      props.addingNewCards(
+        window.innerWidth,
+        JSON.parse(localStorage.getItem("shortMovies"))
+      );
+    }
   }, [props.trig]);
 
   return (
     <>
+      <InfoToolTip
+        setOpen={props.setOpen}
+        route={props.route}
+        isOpen={props.open}
+        setError={props.setError}
+      />
       <Header
         route="movies"
         signUp={props.signUp}
@@ -77,7 +96,6 @@ function Movies(props) {
               savedMovies={props.savedMovies}
               isLiked={props.isLiked}
               array={props.array3}
-              setLikes={setLikes}
               check={props.check}
             />
           );

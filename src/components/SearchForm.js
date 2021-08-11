@@ -8,6 +8,7 @@ function SearchFrom(props) {
   }
 
   function submitDemand() {
+    props.setDemand(props.demand);
     props.setWords(props.demand);
   }
 

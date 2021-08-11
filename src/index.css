@@ -86,6 +86,7 @@
 @import url(./blocks/navigation/__close-button/navigation__close-button.css);
 @import url(./blocks/navigation/_visible/navigation_visible.css);
 @import url(./blocks/navigation/__buttoms/navigation__buttoms.css);
+@import url(./blocks/navigation/_background-color/navigation_background-color.css);
 @import url(./blocks/profile/profile.css);
 @import url(./blocks/profile/__text/profile__text.css);
 @import url(./blocks/profile/__text/_weight/profile__text_weight.css);
@@ -97,6 +98,7 @@
 @import url(./blocks/profile/__buttons/profile__buttons.css);
 @import url(./blocks/profile/__button/profile__button.css);
 @import url(./blocks/profile/__button/_red/profile__button_red.css);
+@import url(./blocks/profile/__button/_inactive/profile__button_inactive.css);
 @import url(./blocks/footer/footer.css);
 @import url(./blocks/footer/__text/footer__text.css);
 @import url(./blocks/footer/__header/footer__header.css);
