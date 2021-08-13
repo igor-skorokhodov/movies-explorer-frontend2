@@ -1,0 +1,8 @@
+.element__container_likes {
+    display: flex;
+    justify-content: start;
+    flex-direction: column;
+    height: 35px;
+    vertical-align: center;
+
+}

@@ -1,0 +1,12 @@
+.navigation__buttoms {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+@media screen and (min-width: 1100px) {
+    .navigation__buttoms {
+        flex-direction: row;
+        width: 231px;
+    }
+}

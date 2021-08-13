@@ -1,0 +1,19 @@
+.infotooltip__container {
+        width: 430px;
+        height: 330px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background-color: white;
+        border-radius: 10px 10px 10px 10px;
+    }
+    
+    .infotooltip__container:nth-child(3n) {
+        margin-top: 30px;
+    }
+    
+    @media screen and (max-width: 950px) {
+        .infotooltip__container {
+            width: 282px;
+        }
+    }

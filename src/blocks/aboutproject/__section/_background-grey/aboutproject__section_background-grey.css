@@ -1,0 +1,9 @@
+.aboutproject__section_background-grey {
+    color: black;
+    background-color: #F2F2F2;
+    margin: 0;
+    height: 36px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}

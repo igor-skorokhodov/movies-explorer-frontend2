@@ -1,0 +1,17 @@
+.moviescard__title {
+  margin-top: 0;
+  margin-bottom: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 16px;
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+  .moviescard__title {
+    font-size: 12px;
+    line-height: 15px;
+  }
+}

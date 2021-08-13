@@ -1,0 +1,17 @@
+.aboutme__subheader {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 20px;
+    color: #000000;
+    mix-blend-mode: normal;
+    grid-area: subheader;
+    margin: 0;
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+    .aboutme__subheader {
+        font-size: 11px;
+        line-height: 16px;
+    }
+}

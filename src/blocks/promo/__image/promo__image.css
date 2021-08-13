@@ -1,0 +1,14 @@
+.promo__image {
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 0;
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+    .promo__image {
+        height: 248px;
+        width: 248px;
+    }
+    
+}

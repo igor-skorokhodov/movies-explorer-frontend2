@@ -1,0 +1,6 @@
+.searchform__container_border-buttom {
+    border-bottom: solid;
+    border-width: 1px;
+    border-color: #E8E8E8;
+    justify-content: space-between;
+}

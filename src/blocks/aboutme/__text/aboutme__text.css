@@ -1,0 +1,15 @@
+.aboutme__text {
+    font-size: 14px;
+    line-height: 22px;
+    color: #000000;
+    mix-blend-mode: normal;
+    grid-area: text;
+    margin: 0;
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+    .aboutme__text {
+        font-size: 11px;
+        line-height: 16px;
+    }
+}

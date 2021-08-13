@@ -1,0 +1,7 @@
+.aboutme {
+    display: flex;
+    width: 100%;
+    background-color: #FFFFFF;
+    flex-direction: column;
+    justify-content: center;
+}

@@ -1,0 +1,13 @@
+.aboutproject__section {
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    color: #A0A0A0;
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+    .aboutproject__section {
+        font-size: 11px;
+        line-height: 13px;
+    }
+}

@@ -1,0 +1,7 @@
+.aboutme__links {
+    display: flex;
+    flex-direction: row;
+    grid-area: links;
+    margin: 0;
+    margin-top: 50px;
+}

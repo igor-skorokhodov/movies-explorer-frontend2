@@ -1,0 +1,28 @@
+.navigation__button {
+    background-size: contain;
+    border: none;
+    background-color: white;
+    min-width: 58px;
+    padding: 0;
+    margin: 0;
+    background-position: center;
+    cursor: pointer;
+    color: black;
+    font-size: 14px;
+    line-height: 18px;
+}
+
+@media screen and (min-width: 320px) and (max-width: 1100px) {
+    .navigation__button {
+        margin-top: 28px;
+        font-size: 18px;
+        line-height: 22px;
+        font-weight: 500;
+    }
+
+   
+}
+
+.navigation__button:first-child {
+    margin-top: 0;
+}

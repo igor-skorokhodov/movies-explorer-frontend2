@@ -1,0 +1,9 @@
+.moviescard__time {
+  font-size: 11px;
+  line-height: 13px;
+  align-items: center;
+  color: #a0a0a0;
+  width: 91%;
+  margin-right: auto;
+  margin-left: auto;
+}

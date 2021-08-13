@@ -1,0 +1,9 @@
+.aboutproject__container_size {
+    grid-template-columns: 1fr 4fr;
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+    .aboutproject__container_size {
+        grid-template-columns: 2fr 5fr;
+    }
+}

@@ -1,0 +1,10 @@
+.navigation__avatar {
+    margin-left: 13px;
+    object-fit: none;
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 6px 6px 6px 6px;
+    align-self: center;
+    background: url(../../../images/avatar.svg) no-repeat scroll 0 0 transparent;
+}

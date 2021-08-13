@@ -1,0 +1,16 @@
+.aboutme__text-portfolio {
+    font-size: 30px;
+    line-height: 50px;
+    letter-spacing: -0.04em;
+    color: #000000;
+    margin: 0;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+    .aboutme__text-portfolio {
+        font-size: 18px;
+        line-height: 28px;
+    }
+}
